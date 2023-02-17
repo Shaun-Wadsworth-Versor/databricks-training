@@ -53,16 +53,15 @@ display(spark.sql(f"SHOW TABLES"))
 # DBTITLE 1,We now inspect the table of collected experiment data
 collected_data = spark.table('phytochemicals_quality')
 
+
+# COMMAND ----------
+
+# DBTITLE 1,As a first step, use Databricks' built in data profiler to examine our dataset. Click on + then Data Profile to get Databricks to perform basic data profiling.
 display(collected_data)
 
 # COMMAND ----------
 
-# DBTITLE 1,As a first step, use Databricks' built in data profiler to examine our dataset.
-display(collected_data)
-
-# COMMAND ----------
-
-# DBTITLE 1,Looks like we have a slightly positive relationship between vitamin C and orange quality
+# DBTITLE 1,We can perform more complex analysis using the Data Visualiser. Click + then Data Visualization
 display(collected_data)
 
 # COMMAND ----------
@@ -100,4 +99,57 @@ fig.show()
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC 
+# MAGIC We want to predict the `quality` column, which is a categorial variable with two values. 
+# MAGIC 
+# MAGIC This makes our problem a binary classifier. Have you heard the phrase "cats n dogs"?
+
+# COMMAND ----------
+
+import pyspark.sql.functions as F
+import plotly.express as px
+import plotly.io as pio
+import numpy as np
+
+
+# COMMAND ----------
+
+display(collected_data.select('quality').distinct())
+
+# COMMAND ----------
+
+targets = ['Good', 'Bad']
+data_targets = {t: collected_data.filter(F.col('quality')==t) for t in targets}
+
+# COMMAND ----------
+
+counts = {t: data_targets[t].count() for t in targets}
+print(counts)
+
+print('class imbalance:', counts['Bad']/(counts['Bad'] + counts['Good']))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC The class imbalance shows that the baseline model (predicting every juice to be bad) has 80.3% accuracy
+
+# COMMAND ----------
+
+# A contingency table is an effective visualization for binary classification
+collected_data.crosstab("quality","type").show()
+
+# COMMAND ----------
+
+display(data_targets['Good'])
+
+# COMMAND ----------
+
+citric_bad = collected_data.filter(F.col('quality')=='Bad').select(['citric_acid']).toPandas().values.reshape(-1)
+citric_good = collected_data.filter(F.col('quality')=='Good').select(['citric_acid']).toPandas().values.reshape(-1)
+
+fig = px.histogram(citric_good)
+fig.show()
+fig = px.histogram(citric_bad)
+fig.show()
 
