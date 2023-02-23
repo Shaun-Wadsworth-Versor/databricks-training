@@ -145,5 +145,9 @@ displayHTML("""
 
 # COMMAND ----------
 
-our_features = fs.read_table(f"{DATABASE_NAME}.features_oj_prediction_experiment")
-display(our_features)
+display(fs.read_table(f"{DATABASE_NAME}.features_oj_prediction_experiment"))
+
+
+# COMMAND ----------
+
+
