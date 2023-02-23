@@ -66,7 +66,12 @@ display(collected_data)
 
 # COMMAND ----------
 
-# DBTITLE 1,Your turn: have a play around! 🥳
+# MAGIC %md
+# MAGIC ## Your Turn ! 
+# MAGIC Have a play around with our dataset. What types of visualisations work best? Can you see any correlations between data items that may be useful in predicting juice quality?
+
+# COMMAND ----------
+
 display(collected_data)
 
 # COMMAND ----------
@@ -103,7 +108,7 @@ fig.show()
 # MAGIC 
 # MAGIC We want to predict the `quality` column, which is a categorial variable with two values. 
 # MAGIC 
-# MAGIC This makes our problem a binary classifier. Have you heard the phrase "cats n dogs"?
+# MAGIC This makes our problem a binary classifier. 
 
 # COMMAND ----------
 

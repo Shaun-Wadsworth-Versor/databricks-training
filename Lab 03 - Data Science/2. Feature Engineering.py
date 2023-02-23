@@ -109,3 +109,49 @@ fs.create_table(
 displayHTML("""
   <h3>Check out the <a href="/#feature-store/{}.features_oj_prediction_experiment">feature store</a> to see where our features are stored.</h3>
 """.format(DATABASE_NAME))
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC ## Your Turn ! 
+# MAGIC Add a new feature to the dataset for vitamin_c_enzyme_ratio = log (vitamin C levels / enzyme levels / 100)
+
+# COMMAND ----------
+
+# DBTITLE 1,First of all, calculate the new feature
+# enter your code here
+raw_data = raw_data.assign(vitamin_c_enzyme_ratio=lambda x: np.log(x["vitamin_c"]/x["enzymes"]/100))
+
+
+# COMMAND ----------
+
+# DBTITLE 1,Now lets plot the feature using Seabourne as before. How does that look?
+# enter your code here
+sns.displot(raw_data["vitamin_c_enzyme_ratio"].to_numpy())
+
+plt.ylabel("Count")
+plt.xlabel("Vitamin C Enzyme ratio (no units)")
+plt.show()
+
+# COMMAND ----------
+
+# DBTITLE 1,Now we need to add the new feature to our feature store table.
+# Enter your code here.
+# Hint: You will need to use the Feature Store write_table command in merge mode.
+#       (ref: https://learn.microsoft.com/en-us/azure/databricks/machine-learning/feature-store/feature-tables#update-only-specific-rows-in-a-feature-table)
+
+fs.write_table(
+  name=f"{DATABASE_NAME}.features_oj_prediction_experiment",
+  df = raw_data.to_spark(),
+  mode = 'merge'
+)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC #### Lets have a look to confirm the new feature has been added
+
+# COMMAND ----------
+
+our_features = fs.read_table(f"{DATABASE_NAME}.features_oj_prediction_experiment")
+display(our_features)

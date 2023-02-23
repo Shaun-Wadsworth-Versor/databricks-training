@@ -168,7 +168,7 @@ preprocessor = ColumnTransformer(preprocessing_pipeline, remainder="passthrough"
 
 # COMMAND ----------
 
-# DBTITLE 1,Our pipeline needs to end in an estimator, we will use a random forrest at first
+# DBTITLE 1,Our pipeline needs to end in an estimator, we will use a random forest at first
 from sklearn.ensemble import RandomForestClassifier
 
 rf_params = {
@@ -183,6 +183,7 @@ classifier = RandomForestClassifier(**rf_params)
 # COMMAND ----------
 
 # DBTITLE 1,We can now inspect our modelling pipeline
+
 from sklearn import set_config
 from sklearn.pipeline import Pipeline
 
@@ -234,7 +235,7 @@ rf_model
 # COMMAND ----------
 
 # DBTITLE 1,We create a blank experiment to log our runs to
-experiment_id = <>
+experiment_id = 1451364613045596
 
 # For future reference, of course, you can use the mlflow APIs to create and set the experiment
 
@@ -334,7 +335,7 @@ with mlflow.start_run(run_name="random_forest_pipeline_2", experiment_id=experim
 
 # MAGIC %md-sandbox
 # MAGIC 
-# MAGIC ## Search best hyper parameters with HyperOpt (Bayesian optimization) accross multiple nodes
+# MAGIC ## (optional) Search best hyper parameters with HyperOpt (Bayesian optimization) accross multiple nodes
 # MAGIC <div style="float:right"><img src="https://quentin-demo-resources.s3.eu-west-3.amazonaws.com/images/bayesian-model.png" style="height: 330px"/></div>
 # MAGIC Our model performs well but we want to run hyperparameter optimisation across our parameter search space. We will use HyperOpt to do so. For fun, we're going to try an XGBoost model here.
 # MAGIC 
