@@ -120,18 +120,15 @@ displayHTML("""
 
 # DBTITLE 1,First of all, calculate the new feature
 # enter your code here
-raw_data = raw_data.assign(vitamin_c_enzyme_ratio=lambda x: np.log(x["vitamin_c"]/x["enzymes"]/100))
+
 
 
 # COMMAND ----------
 
 # DBTITLE 1,Now lets plot the feature using Seabourne as before. How does that look?
 # enter your code here
-sns.displot(raw_data["vitamin_c_enzyme_ratio"].to_numpy())
 
-plt.ylabel("Count")
-plt.xlabel("Vitamin C Enzyme ratio (no units)")
-plt.show()
+
 
 # COMMAND ----------
 
@@ -140,11 +137,6 @@ plt.show()
 # Hint: You will need to use the Feature Store write_table command in merge mode.
 #       (ref: https://learn.microsoft.com/en-us/azure/databricks/machine-learning/feature-store/feature-tables#update-only-specific-rows-in-a-feature-table)
 
-fs.write_table(
-  name=f"{DATABASE_NAME}.features_oj_prediction_experiment",
-  df = raw_data.to_spark(),
-  mode = 'merge'
-)
 
 # COMMAND ----------
 
