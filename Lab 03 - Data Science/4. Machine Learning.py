@@ -287,7 +287,7 @@ new_preprocessing_pipeline.append(("process_categorical", one_hot_pipeline, cate
 new_preprocessing_pipeline.append(("process_numerical", numerical_pipeline, numerical_features))
 
 # TODO: add the remaining columns pipeline
-new_preprocessing_pipeline = ColumnTransformer(new_preprocessing_pipeline, remainder="passthrough", sparse_threshold=0)
+new_preprocessor = ColumnTransformer(new_preprocessing_pipeline, remainder="passthrough", sparse_threshold=0)
 
 
 # COMMAND ----------
@@ -303,7 +303,7 @@ set_config(display="diagram")
 
 classifier = LogisticRegression()
 lr_model = Pipeline([
-    ("preprocessor", preprocessor),
+    ("preprocessor", new_preprocessor),
     ("classifier", classifier),
 ])
 
