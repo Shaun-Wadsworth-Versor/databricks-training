@@ -272,7 +272,7 @@ with mlflow.start_run(run_name="random_forest_pipeline",
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ### Your Turn!
+# MAGIC ## Your Turn!
 # MAGIC Lets try creating a new processing pipeline that runs a different model on the data
 
 # COMMAND ----------
@@ -281,13 +281,10 @@ with mlflow.start_run(run_name="random_forest_pipeline",
 new_preprocessing_pipeline = []
 
 # TODO: add the categorical columns pipeline
-new_preprocessing_pipeline.append(("process_categorical", one_hot_pipeline, categorical_features))
 
 # TODO: add the numerical columns pipeline
-new_preprocessing_pipeline.append(("process_numerical", numerical_pipeline, numerical_features))
 
 # TODO: add the remaining columns pipeline
-new_preprocessor = ColumnTransformer(new_preprocessing_pipeline, remainder="passthrough", sparse_threshold=0)
 
 
 # COMMAND ----------
@@ -300,12 +297,6 @@ from sklearn.pipeline import Pipeline
 set_config(display="diagram")
 
 ## TODO: Create a model called lr_model. Use the LogisticRegression classifier. We don't need to set any parameters for this initial example
-
-classifier = LogisticRegression()
-lr_model = Pipeline([
-    ("preprocessor", new_preprocessor),
-    ("classifier", classifier),
-])
 
 # Lets have a look at our pipeline
 lr_model
@@ -324,13 +315,8 @@ with mlflow.start_run(run_name="logistic_regression_pipeline",
                       experiment_id=experiment_id) as mlflow_run:
 
     # TODO: Fit our estimator
-    lr_model.fit(X_training, y_training)
     
     # TODO: Log metrics for the validation set
-    mlflow.sklearn.eval_and_log_metrics(lr_model,
-                                        X_validation,
-                                        y_validation,
-                                        prefix="val_")
 
 # COMMAND ----------
 
